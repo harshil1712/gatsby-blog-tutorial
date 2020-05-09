@@ -9,10 +9,14 @@ export default () => (
     query={graphql`
       query blogListings {
         allMarkdownRemark {
-          nodes {
-            frontmatter {
-              title
-              excerpt
+          edges {
+            node {
+              fields {
+                slug
+              }
+              frontmatter {
+                title
+              }
             }
           }
         }
@@ -23,11 +27,11 @@ export default () => (
         <Layout>
           <SEO title="Home" />
           <div>
-            {data.allMarkdownRemark.nodes.map(({ frontmatter }) => (
-              <div>
-                <h2>{frontmatter.title}</h2>
-                <p>{frontmatter.excerpt}</p>
-              </div>
+            {data.allMarkdownRemark.edges.map(({ node }) => (
+              <Link to={node.fields.slug}>
+                <h2>{node.frontmatter.title}</h2>
+                <p>{ node.frontmatter.excerpt}</p>
+              </Link>
             ))}
           </div>
         </Layout>
